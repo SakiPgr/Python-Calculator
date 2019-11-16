@@ -20,97 +20,68 @@ class CalcPy:
         main_frame = tk.Frame(master)
         main_frame.pack(fill=tk.BOTH)
 
-        def reset():
+        def reset():    # This will reset the label to just '0'
+            output.config(text='0')
+
+        def delete():   # This will delete the last input
             pass
 
-        def delete():
+        def equals():   # Will show the result of the computation
             pass
 
-        def add_number():
+        def add_this(sign):     # Adds the pressed sign
+            if output['text'] == '0':
+                output.config(sign)
+            else:
+                output['text'] += sign
+
+        def show():     # Will be executed on every buttonpress to show
             pass
 
-        def add_op_parenth():
+        def execute_this(op):   # Executing the chosen operation
             pass
 
-        def plus_minus():
-            pass
-
-        def add_comma():
-            pass
-
-        def divide():
-            pass
-
-        def multiply():
-            pass
-
-        def minus():
+        def memory():
             pass
 
         stick = (tk.N, tk.E, tk.S, tk.W)
 
-        reset_button = tk.Button(main_frame, text='Reset', fg='red', width=8, height=2, command=reset)
-        reset_button.grid(row=1, rowspan=2, column=0, sticky=stick)
+        buttons = [['', '7', '8', '9', '/', 'mem'],
+                   ['(', '4', '5', '6', '*', 'x**2'],
+                   [')', '1', '2', '3', '-', 'π'],
+                   ['+/-', '0', '', '.', '+', 'root']]
 
-        output = tk.Label(main_frame, relief='sunken', width=30)
-        output.grid(row=1, column=1, columnspan=3, padx=3, sticky=stick, pady=3)
+        for i in range(len(buttons)):
+            for j in range(len(buttons[i])):
+                if not buttons[i][j]:
+                    pass
+                elif buttons[i][j] == '0':
+                    btn = tk.Button(main_frame, text=buttons[i][j], bg='lavender',
+                                    command=lambda name=buttons[i][j]: add_this(name), height=2)
+                    btn.grid(row=i + 2, column=j, columnspan=2, padx=2, pady=2, sticky=stick)
+                else:
+                    btn = tk.Button(main_frame, textvariable=buttons[i][j], text=buttons[i][j],
+                                    width=8, bg='lavender', height=2,
+                                    command=lambda name=buttons[i][j]: add_this(name))
+                    btn.grid(row=i + 2, column=j, padx=2, pady=2, sticky=stick)
 
-        delete_button = tk.Button(main_frame, text='Delete', width=8, height=2, command=delete)
-        delete_button.grid(row=1, column=4)
+        label = tk.Label(main_frame, text='Calculator', height=3, font=4, bg='lavender')
+        label.grid(row=0, column=0, columnspan=6, sticky=stick)
 
-        open_parenth_button = tk.Button(main_frame, text='(', command=add_op_parenth, height=2)
-        open_parenth_button.grid(row=3, column=0, sticky=stick)
+        reset_button = tk.Button(main_frame, text='Reset', textvariable='Reset',
+                                 fg='red', height=2, command=reset, bg='lavender')
+        reset_button.grid(row=1, rowspan=2, column=0, padx=2, pady=2, sticky=stick)
 
-        close_parenth_button = tk.Button(main_frame, text=')', command=add_op_parenth, height=2)
-        close_parenth_button.grid(row=4, column=0, sticky=stick)
+        output = tk.Label(main_frame, text='5', anchor='e', relief='sunken', bg='lavender')
+        output.grid(row=1, column=1, columnspan=3, padx=3, pady=3, sticky=stick)
 
-        # for i in range(1, 10):
-        one_button = tk.Button(main_frame, text='1', command=add_number, height=2)
-        one_button.grid(row=2, column=1, sticky='we')
+        delete_button = tk.Button(main_frame, text='←', font=4, textvariable='←',
+                                  height=2, command=delete, bg='lavender')
+        delete_button.grid(row=1, column=4, columnspan=2, padx=2, pady=2, sticky=stick)
 
-        two_button = tk.Button(main_frame, text='2', command=add_number, height=2)
-        two_button.grid(row=2, column=2, sticky='we')
-
-        three_button = tk.Button(main_frame, text='3', command=add_number, height=2)
-        three_button.grid(row=2, column=3, sticky='we')
-
-        four_button = tk.Button(main_frame, text='4', command=add_number, height=2)
-        four_button.grid(row=3, column=1, sticky='we')
-
-        five_button = tk.Button(main_frame, text='5', command=add_number, height=2)
-        five_button.grid(row=3, column=2, sticky='we')
-
-        six_button = tk.Button(main_frame, text='6', command=add_number, height=2)
-        six_button.grid(row=3, column=3, sticky='we')
-
-        seven_button = tk.Button(main_frame, text='7', command=add_number, height=2)
-        seven_button.grid(row=4, column=1, sticky='we')
-
-        eight_button = tk.Button(main_frame, text='8', command=add_number, height=2)
-        eight_button.grid(row=4, column=2, sticky='we')
-
-        nine_button = tk.Button(main_frame, text='9', command=add_number, height=2)
-        nine_button.grid(row=4, column=3, sticky='we')
-
-        zero_button = tk.Button(main_frame, text='0', command=add_number, height=2)
-        zero_button.grid(row=5, column=1, columnspan=2, sticky='we')
-
-        plus_minus_button = tk.Button(main_frame, text='+/-', command=plus_minus)
-        plus_minus_button.grid(row=5, column=0, sticky=stick)
-
-        comma_button = tk.Button(main_frame, text='.', command=add_comma)
-        comma_button.grid(row=5, column=3, sticky=stick)
-
-        divide_button = tk.Button(main_frame, text='/', command=divide)
-        divide_button.grid(row=2, column=4, sticky=stick)
-
-        multiply_button = tk.Button(main_frame, text='*', command=multiply)
-        multiply_button.grid(row=3, column=4, sticky=stick)
-
-        minus_button = tk.Button(main_frame, text='-', command=minus)
-        minus_button.grid(row=4, column=4, sticky=stick)
-
-        add_button
+        equals_button = tk.Button(main_frame, text='=', textvariable='=',
+                                  command=equals, height=3, bg='lavender')
+        equals_button.grid(row=6, column=0, columnspan=6, padx=2, pady=2, sticky=stick)
 
 
 window = tk.Tk()
