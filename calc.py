@@ -20,36 +20,37 @@ class CalcPy:
         main_frame = tk.Frame(master)
         main_frame.pack(fill=tk.BOTH)
 
+        buttons = [['', '7', '8', '9', '/'],
+                   ['(', '4', '5', '6', '*'],
+                   [')', '1', '2', '3', '-'],
+                   ['+/-', '0', '', '.', '+']]
+
         def reset():    # This will reset the label to just '0'
             output.config(text='0')
 
         def delete():   # This will delete the last input
-            pass
+            if len(output['text']) > 1:
+                new_output = output['text'][:-1]
+                output.config(text=new_output)
+            else:
+                reset()
 
         def equals():   # Will show the result of the computation
-            pass
+            output.config(text=str(eval(output['text'])))
 
         def add_this(sign):     # Adds the pressed sign
-            if output['text'] == '0':
-                output.config(sign)
+            if sign == '+/-' and '-' in output['text']:
+                output['text'] = output['text'][1:]
+            elif sign == '+/-' and output['text'] != '0':
+                output['text'] = '-' + output['text']
+            elif output['text'] == '0' and sign != '+/-':
+                output.config(text=sign)
+            elif output['text'] == '0' and sign == '+/-':
+                pass
             else:
-                output['text'] += sign
-
-        def show():     # Will be executed on every buttonpress to show
-            pass
-
-        def execute_this(op):   # Executing the chosen operation
-            pass
-
-        def memory():
-            pass
+                output['text'] += sign    
 
         stick = (tk.N, tk.E, tk.S, tk.W)
-
-        buttons = [['', '7', '8', '9', '/', 'mem'],
-                   ['(', '4', '5', '6', '*', 'x**2'],
-                   [')', '1', '2', '3', '-', 'π'],
-                   ['+/-', '0', '', '.', '+', 'root']]
 
         for i in range(len(buttons)):
             for j in range(len(buttons[i])):
@@ -66,13 +67,13 @@ class CalcPy:
                     btn.grid(row=i + 2, column=j, padx=2, pady=2, sticky=stick)
 
         label = tk.Label(main_frame, text='Calculator', height=3, font=4, bg='lavender')
-        label.grid(row=0, column=0, columnspan=6, sticky=stick)
+        label.grid(row=0, column=0, columnspan=5, sticky=stick)
 
         reset_button = tk.Button(main_frame, text='Reset', textvariable='Reset',
                                  fg='red', height=2, command=reset, bg='lavender')
         reset_button.grid(row=1, rowspan=2, column=0, padx=2, pady=2, sticky=stick)
 
-        output = tk.Label(main_frame, text='5', anchor='e', relief='sunken', bg='lavender')
+        output = tk.Label(main_frame, text='0', anchor='e', relief='sunken', bg='lavender')
         output.grid(row=1, column=1, columnspan=3, padx=3, pady=3, sticky=stick)
 
         delete_button = tk.Button(main_frame, text='←', font=4, textvariable='←',
@@ -81,7 +82,7 @@ class CalcPy:
 
         equals_button = tk.Button(main_frame, text='=', textvariable='=',
                                   command=equals, height=3, bg='lavender')
-        equals_button.grid(row=6, column=0, columnspan=6, padx=2, pady=2, sticky=stick)
+        equals_button.grid(row=6, column=0, columnspan=5, padx=2, pady=2, sticky=stick)
 
 
 window = tk.Tk()
